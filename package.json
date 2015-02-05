@@ -1,0 +1,16 @@
+{
+  "name": "datapackage-licenses",
+  "version": "0.1.0",
+  "description": "A selection of suggested licenses for Data Packages.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test",
+    "update": "make update"
+  },
+  "author": "Søren Jones",
+  "license": "UNLICENSE",
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*"
+  }
+}

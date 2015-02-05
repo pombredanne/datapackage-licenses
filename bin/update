@@ -1,0 +1,123 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var https = require('https')
+  , fs = require('fs');
+
+/**
+ * New licenses.
+ */
+
+var newLicenses = [];
+
+/**
+ * Ids.
+ */
+
+var ids = [
+  'ODC-PDDL-1.0',
+  'ODC-BY-1.0',
+  'ODbL-1.0',
+  'CC0-1.0',
+  'CC-BY-4.0',
+  'CC-BY-SA-4.0'
+];
+
+/**
+ * Extract a subset of the data.
+ */
+
+var extract = function (data) {
+  return {
+    'url': data.url,
+    'title': data.title,
+    'id': data.id
+  };
+}
+
+/**
+ * Get a license.
+ */
+
+var get = function (id) {
+  return new Promise(function (resolve, reject) {
+    var options
+      , callback
+      , request;
+
+    options = {
+      method: 'get',
+      protocol: 'https:',
+      host: 'api.github.com',
+      port: 443,
+      path: '/repos/okfn/licenses/contents/licenses/' + id + '.json',
+      withCredentials: false,
+      headers: {'user-agent': 'Data Package Licenses'}
+    };
+
+    callback = function(response) {
+      var body = '';
+
+      response.on('data', function(chunk) {
+        body += chunk;
+      });
+
+      response.on('end', function () {
+        var json
+          , base64String
+          , buf
+          , data
+          , license;
+
+        json = JSON.parse(body);
+        base64String = json.content;
+        buf = new Buffer(base64String, 'base64');
+        data = JSON.parse(buf.toString());
+        license = extract(data);
+        resolve(license);
+      });
+    }
+
+    request = https.request(options, callback);
+
+    request.on('error', function (err) {
+      reject(Error(err));
+    });
+
+    request.end();
+  });
+};
+
+/**
+ * Get all the licenses.
+ */
+
+var getAll = function (ids) {
+  return Promise.all(ids.map(get));
+}
+
+/**
+ * Write to ./data/licenses.json.
+ */
+
+var write = function (licenses) {
+  var out = JSON.stringify(licenses, null, '  ') + '\n';
+  fs.writeFile('./data/licenses.json', out, function (err) {
+    if (err) Error(err);
+  });
+}
+
+/**
+ * Update ./data/licenses.json.
+ */
+
+getAll(ids).then(function (licenses) {
+  licenses.forEach(function (license) {
+    newLicenses.push(license);
+  });
+
+  write(newLicenses);
+});
