@@ -1,14 +1,13 @@
 var expect = require('chai').expect
   , licenses = require('./../index').licenses
   , createLicense = require('./../index').createLicense
-  , getLicense = require('./../index').getLicense
-  ;
+  , getLicense = require('./../index').getLicense;
 
-  describe('licenses', function () {
-    it('should not be empty', function () {
-      expect(licenses).not.empty;
-    });
+describe('licenses', function () {
+  it('should not be empty', function () {
+    expect(licenses).not.empty;
   });
+});
 
 describe('createLicense', function () {
   describe('a license created without an object', function () {
@@ -33,8 +32,7 @@ describe('createLicense', function () {
 
   describe('a license created with a populated object', function () {
     var obj
-      , license
-      ;
+      , license;
 
     before(function () {
       obj = {
@@ -62,8 +60,7 @@ describe('createLicense', function () {
 describe('getLicense', function () {
   var index
     , license
-    , id
-    ;
+    , id;
 
   before(function () {
     index = Math.floor(Math.random() * licenses.length)
