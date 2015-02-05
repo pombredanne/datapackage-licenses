@@ -1,14 +1,24 @@
 {
   "name": "datapackage-licenses",
+  "description": "A selection of licenses for Data Packages.",
   "version": "0.1.0",
-  "description": "A selection of suggested licenses for Data Packages.",
-  "main": "index.js",
+  "license": "UNLICENSE",
+  "author": "Søren Jones",
   "scripts": {
     "test": "make test",
     "update": "make update"
   },
-  "author": "Søren Jones",
-  "license": "UNLICENSE",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/sxren/datapackage-licenses.git"
+  },
+  "bugs": {
+    "url": "http://github.com/okfn/datapackage-licenses/issues"
+  },
+  "engines": [
+    "node >= 0.6"
+  ],
+  "main": "index.js",
   "devDependencies": {
     "chai": "*",
     "mocha": "*"
